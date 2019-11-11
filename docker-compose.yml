@@ -1,0 +1,46 @@
+version: '3.3'
+services:
+  elasticsearch1:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.4
+    environment:
+      ES_JAVA_OPTS: '-Xms256m -Xmx1g'
+      cluster.name: es-cluster
+      node.name: es1
+      network.bind_host: 0.0.0.0
+      # discovery.zen.minimum_master_nodes: 1
+      # discovery.zen.ping.unicast.hosts: elasticsearch1
+      discovery.type: single-node
+      xpack.security.enabled: 'false'
+      xpack.monitoring.enabled: 'false'
+      xpack.watcher.enabled: 'false'
+      xpack.ml.enabled: 'false'
+      http.cors.enabled : 'true'
+      http.cors.allow-origin : "*"
+      http.cors.allow-methods : OPTIONS, HEAD, GET, POST, PUT, DELETE
+      http.cors.allow-headers : X-Requested-With,X-Auth-Token,Content-Type, Content-Length
+      logger.level: debug
+    volumes:
+      - ./data:/usr/share/elasticsearch/data
+    networks:
+      - overlay
+    ports:
+      - 9200:9200
+      - 9300:9300
+
+  crawler:
+    image: italia/publiccode-tools-crawler
+    container_name: publiccode-tools-crawler
+    build:
+      context: ./crawler
+      dockerfile: Dockerfile
+    depends_on:
+      - elasticsearch1
+    command: ["./wait-for-it.sh", "elasticsearch1:9200", "-t","300", "--", "./start.sh"]
+    networks:
+      - overlay
+volumes:
+  esdata1:
+    driver: local
+
+networks:
+  overlay:
