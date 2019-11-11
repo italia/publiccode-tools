@@ -11,7 +11,3 @@ COPY ./wait-for-it.sh ./
 COPY ./start.sh ./
 RUN mkdir -p /tmp/crawler/output
 
-#CMD ["bin/crawler", "download-whitelist", "https://onboarding.developers.italia.it/repo-list", "whitelist/onboarding-reuse.yml"]
-#ENTRYPOINT ["bin/crawler", "crawl", "whitelist/*.yml"]
-
-
