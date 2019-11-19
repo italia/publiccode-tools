@@ -38,6 +38,22 @@ services:
     command: ["./wait-for-it.sh", "elasticsearch1:9200", "-t","300", "--", "./start.sh"]
     networks:
       - overlay
+
+  pc-editor:
+    image: italia/publiccode-tools-editor
+    container_name: publiccode-tools-editor
+    build:
+      context: ./publiccode-editor
+      dockerfile: Dockerfile
+    environment:
+      - ELASTIC_URL=http://localhost:9200/indicepa_pec/_search
+    depends_on:
+      - elasticsearch1
+    networks:
+      - overlay
+    ports:
+      - 8100:80
+
 volumes:
   esdata1:
     driver: local
