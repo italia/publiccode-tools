@@ -1,0 +1,32 @@
+version: 2.1
+
+references:
+  docker_publish_parameters: &docker_publish_parameters
+    image: italia/publiccode-tools-elasticsearch
+    tag: "latest,$CIRCLE_SHA1"
+    path: elasticsearch
+    docker-context: elasticsearch
+
+orbs:
+  docker: circleci/docker@1.4.0
+
+workflows:
+  build-publiccode-tools-elasticsearch:
+    jobs:
+      - docker/publish:
+          <<: *docker_publish_parameters
+          lint-dockerfile: true
+          deploy: false
+          filters:
+            branches:
+              ignore:
+                - master
+
+  build-and-publish-publiccode-tools-elasticsearch:
+    jobs:
+      - docker/publish:
+          <<: *docker_publish_parameters
+          filters:
+            branches:
+              only:
+                - master
