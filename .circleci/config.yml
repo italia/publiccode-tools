@@ -11,6 +11,19 @@ orbs:
   docker: circleci/docker@1.4.0
 
 workflows:
+  # Every night, build and publish to dockerhub
+  # to make sure latest data are in
+  daily-build-and-publish:
+    triggers:
+      - schedule:
+          cron: "0 6 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - docker/publish:
+          <<: *docker_publish_parameters
   build-publiccode-tools-elasticsearch:
     jobs:
       - docker/publish:
