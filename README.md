@@ -38,7 +38,7 @@ This software is maintained by the [Developers Italia](https://developers.italia
 
 ## License
 
-© 2019 Team per la Trasformazione Digitale - Presidenza del Consiglio dei Minstri
+© 2021 Team per la Trasformazione Digitale - Presidenza del Consiglio dei Ministri
 
 Licensed under the EUPL.
 The version control system provides attribution for specific lines of code.
