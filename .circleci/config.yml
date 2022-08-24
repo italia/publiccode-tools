@@ -8,7 +8,7 @@ references:
     docker-context: elasticsearch
 
 orbs:
-  docker: circleci/docker@1.4.0
+  docker: circleci/docker@2.1.3
 
 workflows:
   # Every night, build and publish to dockerhub
