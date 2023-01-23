@@ -27,8 +27,8 @@ jobs:
           echo ::set-output name=tags::${TAGS}
 
       - name: Build and push
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
-          context: elasticsearch
+          context: ./elasticsearch
           push: true
           tags: ${{ steps.image_tags.outputs.tags }}
