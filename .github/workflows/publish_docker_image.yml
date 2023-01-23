@@ -1,0 +1,34 @@
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  push:
+    branches:
+      - main
+
+jobs:
+  publish_docker_image:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Get Docker image tags
+        id: image_tags
+        run: |
+          IMAGE=italia/publiccode-tools-elasticsearch
+
+          TAGS=${IMAGE}:latest
+          TAGS="$TAGS,${IMAGE}:${GITHUB_SHA::8}"
+
+          echo ::set-output name=tags::${TAGS}
+
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: elasticsearch
+          push: true
+          tags: ${{ steps.image_tags.outputs.tags }}
